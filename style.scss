@@ -14,19 +14,28 @@
 /* BASE RULES */
 /**************/
 
+:root {
+  --color_light_text: #f1faee;
+  --color_dark_text: #darkerGray;
+  --color_background: #f1faee;
+  --color_accent: #E63946;
+  --color_background_dark: #1d3557; 
+}
+
+
 html {
   font-size: 100%;
 }
 
 body {
-  background: $lightGray;
+  background: var(--color_background);
   font: 16px/1.2 $avenir;
   color: $darkGray;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $avenir;
-  color: $darkerGray;
+  color:  var(--color_dark_text);
   font-weight: bold;
 
   margin: 1em 0 15px;
@@ -57,12 +66,39 @@ p {
   margin: 15px 0;
 }
 
+.navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+.nav.navbar-nav li a {
+  color: var(--color_light_text);
+}
+
+.nav.navbar-nav li a:hover {
+  color: var(--color_background_dark);
+  background-color: var(--color_light_text);
+}
+
+.nav.navbar-nav.navbar-right li a {
+  color: var(--color_light_text);
+}
+
+.nav.navbar-nav.navbar-right li a:hover {
+  color: var(--color_accent);
+}
+
 a {
-  color: $blue;
+  color: var(--color_dark_text);
   text-decoration: none;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: var(--color_accent);
   }
 }
 
@@ -134,6 +170,57 @@ img {
 /* LAYOUT / SECTIONS */
 /*********************/
 
+
+
+// landing page styles
+
+#landing_page_main {
+  margin-top: 10px;
+}
+
+
+#photo-header{
+  padding: 1em;
+}
+
+#photo{
+  height: 100%;
+  max-height: 40em;
+}
+
+
+#publication_list_item{
+  border-color: var(--color_accent);
+  border-left-width: 5px;
+  border-left-style: solid;
+  padding: 1em;
+  margin-bottom: 1em;
+  background-color: var(--color_dark_text);
+  display: flex;
+  align-items: center;
+}
+
+#publication_img_frame{
+
+  display: inline-block;
+  vertical-align: middle; /*not required*/
+  position: relative;
+
+}
+
+#publication_img{
+  max-height: 100%;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
 //
 // .masthead
 //
@@ -167,6 +254,9 @@ img {
    display: none !important;
 }
 
+
+
+
 .news {
   h2 {
     margin-top: 0px;
@@ -198,7 +288,7 @@ img {
 
 .posts > .post {
   padding-bottom: 2em;
-  border-bottom: 1px solid $lightGray;
+  border-bottom: 1px solid #1d3557;
 }
 
 .posts > .post:last-child {
@@ -230,7 +320,7 @@ img {
   margin-top: 50px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+  background-color: #457b9d;
 }
 
 footer {
@@ -240,6 +330,16 @@ footer {
     max-height: 50px;
   }
 }
+
+#nav_hack{
+  background-color: var(--color_background_dark);
+  color: #f1faee;
+}
+
+#authors a{
+  color: var(--color_background_dark);
+}
+
 
 // Map legend
 .map-overlay {

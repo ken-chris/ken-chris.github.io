@@ -3,17 +3,17 @@
 #
 
 # Name of your site (displayed in the header)
-name: Alex Mariakakis
-title: Alex Mariakakis
+name: Ken Christofferson
+title: Ken Christofferson
 
 # Short bio or description (displayed in the header)
-description: Alex Mariakakis' personal webpage
+description: Ken Christofferson' personal webpage
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars1.githubusercontent.com/u/9437612?v=3&s=200
 
 # Email
-email: mariakakis at cs dot toronto dot edu
+email: kenc at cs dot toronto dot edu
 
 # Google Analytics
 google_analytics: UA-105342327-1
@@ -40,7 +40,7 @@ defaults:
 footer-links:
   dribbble:
   email:
-  facebook:
+  facebook: 
   flickr:
   github:
   instagram:

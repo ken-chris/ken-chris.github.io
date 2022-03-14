@@ -5,21 +5,8 @@ redirect_from:
 - /projects/
 - /wiki/Projects/
 ---
-<h1>Full Publication List</h1>
-<p>This publication list is primarily restricted to work that I did at the University of Washington while I was a graduate student and postdoc.
-Future research by both myself and my students will be listed in my research group's webpage (TBD).</p>
-
-<div id="myButtons" class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary active">
-    <input type="radio" name="options" id="keyword-all" autocomplete="off" checked> All
-  </label>
-  <label class="btn btn-primary">
-    <input type="radio" name="options" id="keyword-health" autocomplete="off"> <span class='glyphicon glyphicon-heart' aria-hidden='true' style='color:white'></span> Health
-  </label>
-  <label class="btn btn-primary">
-    <input type="radio" name="options" id="keyword-interaction" autocomplete="off"> <span class='glyphicon glyphicon-hand-up' aria-hidden='true' style='color:white'></span> Interaction
-  </label>
-</div>
+<h1>Publications</h1>
+<p>I've included all published work here, but please take a look at the projects page too.</p>
 
 <script type="text/javascript" src="keyword_checkboxes.js"></script>
 
@@ -36,9 +23,9 @@ Future research by both myself and my students will be listed in my research gro
 
 {% capture last_year %}{{ this_year }}{% endcapture %}
 
-<div class="row publication-badge" data-keywords="{{ pub.keywords }}">
-  <div class="publication-pic col-md-2 col-sm-3 col-xs-12 text-left">
-    {% if pub.thumbnail.size > 0 %}<a href="{{ pub.url }}"><img src="{{ pub.thumbnail }}"/></a>{% endif %}&nbsp;
+<div id = "publication_list_item" class="row publication-badge" data-keywords="{{ pub.keywords }}">
+  <div id = "publication_img_frame" class="publication-pic col-md-2 col-sm-3 col-xs-12 text-left">
+    {% if pub.thumbnail.size > 0 %}<a  href="{{ pub.url }}"><img id= "publication_img" src="{{ pub.thumbnail }}"/></a>{% endif %} <!--&nbsp;!-->
   </div>
   <div class="publication-info col-md-10 col-sm-9 col-xs-12">
     <a href="{{ pub.url }}"><h2>{{ pub.title }}</h2></a>

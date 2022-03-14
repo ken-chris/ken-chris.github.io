@@ -4,74 +4,42 @@ layout: default
 ---
 {% assign sorted_news = site.data.news | sort: 'date' | reverse %}
 
-<div class="row">
-  <div class="col-md-6">
-    <h1 style="position:relative;margin-top:-5px">Alex Mariakakis</h1>
-    <ul class="bxslider">
-      <!-- note: imgs can have links around them -->
-      <li><img src="{{site.base_url}}/images/slider/sage.jpg" title=""/></li>
-      <li><img src="{{site.base_url}}/images/slider/biliscreen_glasses.jpg" title=""/></li>
-      <li><img src="{{site.base_url}}/images/slider/boards_demo.png" title=""/></li>
-      <li><img src="{{site.base_url}}/images/slider/lab_discussion.jpg" title=""/></li>
-      <li><img src="{{site.base_url}}/images/slider/shwetak_discussion.jpg" title=""/></li>
-    </ul>
+<div class="row"><h1>Hi, I'm Ken</h1></div>
+
+<div class="row" id = "photo-header" >
+  <div class="col-md-6" id = "publication_list_item">
+      <img id="publication_img_frame" src="{{site.base_url}}/images/slider/sage.jpg" title=""/>
   </div>
   <div class="col-md-6 news">
-    <h2>News</h2>
-    <ul>
-    {% for news in sorted_news limit:5 %}
-      <li><div class="date">{{ news.date | date: '%B %d, %Y' }}:</div>
-        <div class="blurb">
-          {% if news.url == nil %}
-          {{ news.blurb }}
-          {% else %}
-          <a href="{{ news.url }}">{{ news.blurb }}</a>
-          {% endif %}
-          </div></li>
-    {% endfor %}
-    </ul>
-    <a href="{{ site.base_url }}/news/">(More news...)</a>
-    <br/><br/>
+    <h2>My Background</h2>
+    <br>
+    <p>
+      I am a PhD student in Alex Mariakakis's CHAI lab at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> and Joseph Cafazzo's <a href ="https://ehealthinnovation.org/">E-Health Innovation Centre</a> at the University Health Network. 
+      My research focuses on using the sensors embedded in common devices (e.g., mobile phone, earbud, smartspeaker) and novel machine learning techniques to aquire information relevant to human health as well as exploring how that information is best used to improve health outcomes. I am interested in an broad array of sensing modalities and use cases, please see my Research Interests section for more information.   
+    </p>
 
-    <h2>Contact Info</h2>
-    <b>Email:</b> {{ site.email }}
+    <p>
+      I was born in Seattle, Washington and hold a M.S. in Technology Innovation from the Univeristy of Washington and a MSE-DSIT from Tsinghua Univeristy, both earned through the <a href="https://gixnetwork.org/program/dual-degree/" target="_blank">Global Innovation Exchange's dual degree program</a>.
+    </p>
+
   </div>
 </div>
-<br/>
 <div class="row">
-  <div class="col-xs-12">
-    <h2>My Background</h2>
-    <p>
-      I am an Assistant Professor in the <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> and an Affiliate Scientist at <a href="https://technainstitute.com/" target="_blank">Techna</a>. 
-      My main research focus is on mobile health, but I also work in other areas of ubiquitous computing and human-computer interaction like mobile interaction and novel sensing.
-    </p>
-
-    <p>
-      Before joining the University of Toronto, I completed a joint-postdoctoral role under <a href="https://www.linkedin.com/in/larsson-omberg-75912610/" target=”_blank”>Larsson Omberg</a> and <a href="https://ischool.uw.edu/people/faculty/profile/anind" target=”_blank”>Anind Dey</a>, where I split my time between the <a href="https://sagebionetworks.org/" target=”_blank”>Sage Bionetworks</a> and the <a href="http://www.cs.washington.edu/" target=”_blank”>School of Computer Science and Engineering</a> at the <a href="http://www.washington.edu/" target=”_blank”>University of Washington</a>.
-      I completed my PhD at the University of Washington under the advising of <a href="https://homes.cs.washington.edu/~shwetak/" target=”_blank”>Shwetak Patel</a> and <a href="http://faculty.washington.edu/wobbrock/" target=”_blank”>Jacob O. Wobbrock</a>. 
-      I completed my undergraduate studies at <a href="http://www.duke.edu/" target=”_blank”>Duke University</a> with a double major in <a href="http://www.ece.duke.edu/" target=”_blank”>Electrical and Computer Engineering</a> and <a href="http://www.cs.duke.edu/" target=”_blank”>Computer Science</a>.
-      During that time, I conducted research under <a href="http://croy.web.engr.illinois.edu/" target=”_blank”>Romit Roy Choudhury</a>.
-    </p>
-      
-    <h2>Graduate Recruiting (updated Nov. 2021)</h2>
-    <p>
-      <!-- I am actively looking for motivated people to join my research group. 
-      I enjoy working with people from diverse backgrounds, so I encourage anyone who is interested in working with me to fill out this <a href="https://forms.gle/g4TxzvQcxD4JB8MJ8" target="_blank">form</a>. -->
-      I have a sizable cohort of graduate students at this time, so I will not be looking at MSc or PhD applications that are submitted during the 2021–2022 academic year.
-    </p>
-
-    <h2>Undergraduate Recruiting (updated Nov. 2021)</h2>
-    <p>
-      My research group is looking for undergraduates at the University of Toronto to take on the following roles. 
-      The descriptions listed with each position are intended to provide a rough idea of the skills and experience level that we are seeking, but everyone will be considered for all positions.
-      <ul>
-        <li><b>Women's Health:</b> Someone with interest or experience in conducting longitudinal user studies and interviewing participants; ideal for an early-stage undergraduate willing to invest time in a long-term project</li>
-        <li><b>Women's Health:</b> Someone with experience in generating visualizations and applying machine learning on data from surveys and sensors; ideal for a late-stage undergraduate familiar with data science </li>
-        <li><b>Hand Motor Control Assessment:</b> Someone with experience in deep learning and computer vision; ideal for a late-stage undergraduate who can work independently </li>
-      </ul>
-      If you are interested in any of the projects listed above or working with my research group in general, please fill out this <a href="https://forms.gle/AFSkKoxB1eQUgzvp6" target="_blank">form</a>.
-    </p>
-    
+  <div class="col-md-6">
+    <h2>Research Interests</h2>
+    <p>Research interests</p>
+  </div>
+  <div class="col-md-6">
+    <h2>Education</h2>
+    <h4>PhD in Computer Science - Univeristy of Toronto (in progress)</h4>
+    <h4>MS in Engineering, Data Science, and Information Technology - Tsingua Univeristy (2021)</h4>
+    <h4>MS in Technology Innovation - Univeristy of Washington (2021)</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <h2>Contact Info</h2>
+    <b>Email:</b> {{ site.email }}
   </div>
 </div>
 

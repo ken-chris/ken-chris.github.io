@@ -1,45 +1,46 @@
 ---
-layout: default
+layout: new_landing
 
 ---
 {% assign sorted_news = site.data.news | sort: 'date' | reverse %}
+<div id="main_test" role="main" class="container">
+  <div class="row"><h1>&nbsp&nbspHi, I'm Ken</h1></div>
+</div>
+<div id="info_container" role="main" class="container">
+  <div class="row">
+      <div class="col-md-6" id = "photo_container">
+          <img src="{{site.base_url}}/images/slider/kenchristofferson.jpeg" title="" id = "photo_test"/>
+    </div>
+    <div class="col-md-8"m id="bio_container">
+      <div>
+        <h2 id = "bio_h2">A Little About Me</h2>
+        <p>
+          I am a PhD student in Alex Mariakakis's CHAI lab at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> and Joseph Cafazzo's <a href ="https://ehealthinnovation.org/">E-Health Innovation Centre</a> at the University Health Network. 
+          My research focuses on using the sensors embedded in common devices (e.g., mobile phone, earbud, smartspeaker) and novel machine learning techniques to aquire information relevant to human health as well as exploring how that information is best used to improve health outcomes. I am interested in an broad array of sensing modalities and use cases, please see my Research Interests section for more information.   
+        </p>
 
-<div class="row"><h1>Hi, I'm Ken</h1></div>
+        <p>
+          I was born in Seattle, Washington and hold a M.S. in Technology Innovation from the Univeristy of Washington and a MSE-DSIT from Tsinghua Univeristy, both earned through the <a href="https://gixnetwork.org/program/dual-degree/" target="_blank">Global Innovation Exchange's dual degree program</a>.
+        </p>
+      </div>
 
-<div class="row" id = "photo-header" >
-  <div class="col-md-6" id = "publication_list_item">
-      <img id="publication_img_frame" src="{{site.base_url}}/images/slider/sage.jpg" title=""/>
-  </div>
-  <div class="col-md-6 news">
-    <h2>My Background</h2>
-    <br>
-    <p>
-      I am a PhD student in Alex Mariakakis's CHAI lab at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> and Joseph Cafazzo's <a href ="https://ehealthinnovation.org/">E-Health Innovation Centre</a> at the University Health Network. 
-      My research focuses on using the sensors embedded in common devices (e.g., mobile phone, earbud, smartspeaker) and novel machine learning techniques to aquire information relevant to human health as well as exploring how that information is best used to improve health outcomes. I am interested in an broad array of sensing modalities and use cases, please see my Research Interests section for more information.   
-    </p>
-
-    <p>
-      I was born in Seattle, Washington and hold a M.S. in Technology Innovation from the Univeristy of Washington and a MSE-DSIT from Tsinghua Univeristy, both earned through the <a href="https://gixnetwork.org/program/dual-degree/" target="_blank">Global Innovation Exchange's dual degree program</a>.
-    </p>
-
+      <div>
+        <h2 id = "bio_h2">Education</h2>
+        <b>PhD</b> Computer Science - Univeristy of Toronto (in progress)<br>
+        <b>MS</b> Engineering, Data Science, and Information Technology - Tsingua Univeristy (2021)<br>
+        <b>MS</b> Technology Innovation - Univeristy of Washington (2021)<br>
+      </div>
+      <div>
+        <h2 id = "bio_h2">Get In Touch</h2>
+        <b>Email:</b> {{ site.email }}
+      </div>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-6">
-    <h2>Research Interests</h2>
-    <p>Research interests</p>
-  </div>
-  <div class="col-md-6">
-    <h2>Education</h2>
-    <h4>PhD in Computer Science - Univeristy of Toronto (in progress)</h4>
-    <h4>MS in Engineering, Data Science, and Information Technology - Tsingua Univeristy (2021)</h4>
-    <h4>MS in Technology Innovation - Univeristy of Washington (2021)</h4>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-    <h2>Contact Info</h2>
-    <b>Email:</b> {{ site.email }}
+  <div id = "main_tone_3" class="row">
+    <div class="col-md-6">
+      <p></p>
+    </div>
   </div>
 </div>
 

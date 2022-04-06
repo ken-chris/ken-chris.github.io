@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }}</title>
+
+    {% include meta.html %}
+    
+    <!-- JavaScript -->
+    <script type="text/javascript" src="{{ site.baseurl }}/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/bower_components/bxslider-4/dist/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/bower_components/jquery-migrate/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-105342327-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' />
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/bower_components/bxslider-4/dist/jquery.bxslider.min.css" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
+    {{ page.extra_header }}
+    
+    <link rel="apple-touch-icon" href="{{ site.baseurl }}/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ site.baseurl }}/images/favicon/android-chrome-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ site.baseurl }}/images/favicon/android-chrome-icon-512x512.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/images/favicon/favicon-32x32.png">
+    <link rel="manifest" href="/images/favicon/site.webmanifest">
+
+
+    <meta name="theme-color" content="#457b9d">
+
+  </head>
+
+  <body>
+    <nav id = "nav_hack" class="navbar navbar-default navbar-static-top">
+      <div class="container"> 
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div id = "no_margin" class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Ken Christofferson</a></li>
+            <li><a href="{{ site.baseurl }}/publications">Publications</a></li>
+            <li><a href="{{ site.baseurl }}/funfacts">Projects</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+      {{ content }}
+
+    <div class="wrapper-footer container">
+      <!-- <footer class="footer">
+        <div class="row">
+          <div class="col-xs-4 text-left"><a href="http://cs.washington.edu" target="_blank"><img src="{{site.baseurl}}/images/cse.png"/></a></div>
+          <div class="col-xs-4 text-center"><a href="http://dub.washington.edu" target="_blank"><img src="{{site.baseurl}}/images/dub.png"/></a></div>
+          <div class="col-xs-4 text-right"><a href="http://ee.washington.edu" target="_blank"><img src="{{site.baseurl}}/images/ee.gif"/></a></div>
+        </div>
+      </footer> -->
+    </div>
+
+    {% include analytics.html %}
+    {{ page.extra_js }}
+  </body>
+</html>

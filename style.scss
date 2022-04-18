@@ -48,18 +48,27 @@ h1 {
   }
 }
 
-h2 {
-  font-size: 24px;
-}
-
 h1#margin_below{ 
   margin-top: .5em;
   margin-bottom: .25em;
 }
 
+h2 {
+  font-size: 24px;
+}
+
+h2#margin_below{ 
+  margin-top: .5em;
+  margin-bottom: .25em;
+}
+
+
+
 h3 {
   font-size: 20px;
 }
+
+
 
 h4 {
   font-size: 18px;
@@ -227,6 +236,9 @@ img {
   margin: auto;
 }
 
+#pub_page_title {
+
+}
 
 //
 // .masthead

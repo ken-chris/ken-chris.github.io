@@ -42,30 +42,8 @@
 
   </head>
 
-  <body>
-    <nav id = "nav_hack" class="navbar navbar-default navbar-static-top">
-      <div class="container"> 
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div id = "no_margin" class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
+  <body style="background-image: url('{{ site.baseurl }}/images/bkgrnd_1.jpg');">
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/">Ken Christofferson</a></li>
-            <li><a href="{{ site.baseurl }}/publications">Publications</a></li>
-            <li><a href="{{ site.baseurl }}/funfacts">Projects</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    
       {{ content }}
 
     <div class="wrapper-footer container">

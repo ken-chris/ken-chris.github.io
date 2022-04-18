@@ -3,57 +3,44 @@ layout: new_landing
 
 ---
 {% assign sorted_news = site.data.news | sort: 'date' | reverse %}
-<div id="main_test" role="main" class="container">
-  <div class="row"><h1>&nbsp&nbspHi, I'm Ken</h1></div>
-</div>
-<div id="info_container" role="main" class="container">
-  <div class="row">
-      <div class="col-md-6" id = "photo_container">
-          <img src="{{site.base_url}}/images/slider/kenchristofferson.jpeg" title="" id = "photo_test"/>
+
+<div class="container">
+  <div class="row"  id = "landing_container">
+    <div class="col-md-4" id = "landing_container_left">
+      <div>
+        <img src="{{site.base_url}}/images/slider/kenchristofferson.jpeg" title="", id = "landing_photo"/>
+      </div >
+      <ol class = "landing_nav_list">
+        <p class = "landing_nav_item">➰<a href="{{ site.baseurl }}/projects">Projects</a><br></p>
+        <p class = "landing_nav_item">➰<a href="{{ site.baseurl }}/publications">Publications</a><br></p>
+        <p class = "landing_nav_item">➰<a href="/cv/mariakakis_cv.pdf">Curriculum Vitae</a><br></p>
+      </ol>
     </div>
-    <div class="col-md-8"m id="bio_container">
-      <div>
-        <h2 id = "bio_h2">A Little About Me</h2>
-        <p>
-          I am a PhD student in Alex Mariakakis's CHAI lab at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> and Joseph Cafazzo's <a href ="https://ehealthinnovation.org/">E-Health Innovation Centre</a> at the University Health Network. 
-          My research focuses on using the sensors embedded in common devices (e.g., mobile phone, earbud, smartspeaker) and novel machine learning techniques to aquire information relevant to human health as well as exploring how that information is best used to improve health outcomes. I am interested in an broad array of sensing modalities and use cases, please see my Research Interests section for more information.   
-        </p>
-
-        <p>
-          I was born in Seattle, Washington and hold a M.S. in Technology Innovation from the Univeristy of Washington and a MSE-DSIT from Tsinghua Univeristy, both earned through the <a href="https://gixnetwork.org/program/dual-degree/" target="_blank">Global Innovation Exchange's dual degree program</a>.
-        </p>
-      </div>
-
-      <div>
-        <h2 id = "bio_h2">Education</h2>
+    <div class="col-md-8" id = "landing_container_right">
+      <h1 id = "margin_below"> &#128075; Hi, I'm Ken</h2>
+      <p id = "margin_below">
+        I am a PhD student advised by Alex Mariakakis and Joseph Cafazzo 
+        who lead the  <a href="https://chai.cs.toronto.edu/" target="_blank"> Computational Health and Interaction (CHAI) lab</a>
+         at the <a href="https://www.utoronto.ca/" target="_blank">University of Toronto</a> 
+         <a href="https://web.cs.toronto.edu/" target="_blank">Department of Computer Science</a> and the 
+         <a href ="https://ehealthinnovation.org/"> Centre for E-Health Innovation</a> 
+         at the University Health Network respectively. 
+      </p>
+      <p id = "margin_below">
+        My research focuses on using the sensors embedded in common devices (e.g., mobile phone, earbud, smartspeaker) and novel machine learning techniques to acquire information relevant to human health as well as exploring how that information is best used to improve health outcomes. I am interested in a broad array of sensing modalities and use cases, please see my projects page for more information.   
+      </p>
+      <h1 id = "margin_below"> 🏫 Education</h2>
+      <p id = "margin_below">
         <b>PhD</b> Computer Science - Univeristy of Toronto (in progress)<br>
         <b>MS</b> Engineering, Data Science, and Information Technology - Tsingua Univeristy (2021)<br>
         <b>MS</b> Technology Innovation - Univeristy of Washington (2021)<br>
-      </div>
-      <div>
-        <h2 id = "bio_h2">Get In Touch</h2>
+      </p>
+      <h1 id = "margin_below"> 📨 Get In Touch</h2>
+      <p id = "margin_below">
         <b>Email:</b> {{ site.email }}
-      </div>
-    </div>
-  </div>
-</div>
-  <div id = "main_tone_3" class="row">
-    <div class="col-md-6">
-      <p></p>
+      </p>
+
     </div>
   </div>
 </div>
 
-<script>
-$(document).ready(function(){
-
-  $('.bxslider').bxSlider({
-    adaptiveHeight: false,
-    speed: 500,
-    captions: true,
-    auto: true,
-    pause: 5000,
-    autoControls: true
-    });
-});
-</script>

@@ -4,6 +4,8 @@ authors:
 - Ken Christofferson
 - Xuyung Chen
 - Zeyu Wang
+- Alex Mariakakis
+- Yuntao Wang
 conference: 2022 PerCom Workshop on Human Centered Computing Systems (HCCS)
 date: 2022-03-21
 pdf: /pdfs/Earbud_Sleep_Sound_Detection.pdf

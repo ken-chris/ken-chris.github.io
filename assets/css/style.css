@@ -41,6 +41,14 @@ body {
     margin: 0 auto;
 }
 
+/* On canvas screens, keep text content in the upper portion so it doesn't overlap the drawing */
+.screen.has-canvas .screen-content {
+    background: rgba(44, 62, 80, 0.75);
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+    margin-bottom: clamp(1rem, 4vh, 2rem);
+}
+
 #sketchCanvas {
     position: absolute;
     top: 0;
@@ -79,6 +87,46 @@ h3 {
 }
 
 /* Social links and email styling */
+.social-links-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.drawing-config-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(52, 152, 219, 0.15);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    color: #ecf0f1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.drawing-config-arrow:hover {
+    background: rgba(52, 152, 219, 0.35);
+    border-color: rgba(52, 152, 219, 0.6);
+    transform: scale(1.1);
+}
+
+.drawing-config-arrow svg {
+    fill: currentColor;
+}
+
 .social-link {
     display: inline-flex;
     align-items: center;

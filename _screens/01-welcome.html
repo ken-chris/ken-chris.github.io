@@ -5,6 +5,31 @@ title: Welcome
 drawing_config: traversal_pen_control
 ---
 
+<script>
+window.drawingConfigs = [
+{% for config in site.data.drawing_configs %}
+  {
+    "key": "{{ config[0] }}",
+    "svg_file": "{{ config[1].svg_file }}",
+    "speed": {{ config[1].speed | default: 50 }},
+    "resolution": {{ config[1].resolution | default: 10000 }},
+    "scale": {{ config[1].scale | default: 1.0 }},
+    "linewidth": {{ config[1].linewidth | default: 1 }},
+    "circles": {{ config[1].circles | default: 1000 }},
+    "max_freq": {{ config[1].max_freq | default: 2000 }},
+    "max_circle_size": {{ config[1].max_circle_size | default: 1000000 }},
+    "axis_mode": "{{ config[1].axis_mode | default: 'two_true' }}",
+    "rotation_mode": "{{ config[1].rotation_mode | default: 'fixed' }}",
+    "offset_x": {{ config[1].offset_x | default: 0 }},
+    "offset_y": {{ config[1].offset_y | default: 0 }},
+    "global_offset_x": {{ config[1].global_offset_x | default: 0 }},
+    "global_offset_y": {{ config[1].global_offset_y | default: 0 }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+];
+window.activeDrawingConfig = "{{ page.drawing_config }}";
+</script>
+
 <div class="input-controls">
     <button id="useKCBtn" class="active">Use KC</button>
     <button id="drawBtn">Draw</button>
@@ -19,11 +44,13 @@ drawing_config: traversal_pen_control
 
 <div class="screen-content">
     <h1 class="typing-text">Hi I'm Ken, a PhD student at the University of Toronto specializing in wearable sensing.</h1>
-    <h5>
-        <span class="email-text">kenc at cs dot toronto dot edu</span>
-    </h5>
-    <h5>
-        <a href="https://linkedin.com/in/ken-chris" target="_blank" class="social-link" aria-label="LinkedIn Profile">
+    <h5><span class="email-text">kenc at cs dot toronto dot edu</span></h5>
+    <div class="social-links-row">
+        <button class="drawing-config-arrow" id="drawingConfigPrev" aria-label="Previous drawing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="social-links">
+        <a href="https://linkedin.com/in/kenneth-christofferson" target="_blank" class="social-link" aria-label="LinkedIn Profile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
             </svg>
@@ -33,6 +60,10 @@ drawing_config: traversal_pen_control
                 <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
             </svg>
         </a>
-    </h5>
+    </div>
+        <button class="drawing-config-arrow" id="drawingConfigNext" aria-label="Next drawing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+    </div>
 
 </div>

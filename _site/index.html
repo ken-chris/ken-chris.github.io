@@ -10,7 +10,68 @@
     <div class="container">
         
 <section class="screen has-canvas">
-    <div class="input-controls">
+    <script>
+window.drawingConfigs = [
+
+  {
+    "key": "test_text",
+    "svg_file": "test.svg",
+    "speed": 50,
+    "resolution": 10000,
+    "scale": 1.2,
+    "linewidth": 1,
+    "circles": 500,
+    "max_freq": 2000,
+    "max_circle_size": 1000000,
+    "axis_mode": "two_true",
+    "rotation_mode": "fixed",
+    "offset_x": -0.01,
+    "offset_y": -0.1,
+    "global_offset_x": 0,
+    "global_offset_y": 50
+  },
+
+  {
+    "key": "traversal_pen_control",
+    "svg_file": "traversal_pen_control.csv",
+    "speed": 50,
+    "resolution": 10000,
+    "scale": 1.2,
+    "linewidth": 1,
+    "circles": 1500,
+    "max_freq": 2000,
+    "max_circle_size": 1000000,
+    "axis_mode": "two_true",
+    "rotation_mode": "fixed",
+    "offset_x": 0.09,
+    "offset_y": 0.1,
+    "global_offset_x": 0,
+    "global_offset_y": 50
+  },
+
+  {
+    "key": "traversal_ranier",
+    "svg_file": "traversal_paths_ranier.csv",
+    "speed": 50,
+    "resolution": 20000,
+    "scale": 1.4,
+    "linewidth": 1,
+    "circles": 4000,
+    "max_freq": 3000,
+    "max_circle_size": 1000000,
+    "axis_mode": "two_true",
+    "rotation_mode": "fixed",
+    "offset_x": 0,
+    "offset_y": -0.05,
+    "global_offset_x": 0,
+    "global_offset_y": 50
+  }
+
+];
+window.activeDrawingConfig = "traversal_pen_control";
+</script>
+
+<div class="input-controls">
     <button id="useKCBtn" class="active">Use KC</button>
     <button id="drawBtn">Draw</button>
     <input type="file" id="svgUpload" accept=".svg" style="display: none;" />
@@ -20,15 +81,17 @@
 
 <canvas id="referenceCanvas" style="display: none;"></canvas>
 
-<canvas id="sketchCanvas" data-svg-file="traversal_pen_control.csv" data-speed="50" data-resolution="20000" data-scale="1.2" data-linewidth="1" data-circles="3000" data-max-freq="2000" data-max-circle-size="1000000" data-axis-mode="two_true" data-rotation-mode="fixed" data-offset-x="0.09" data-offset-y="0.1" data-global-offset-x="0" data-global-offset-y="50"></canvas>
+<canvas id="sketchCanvas" data-svg-file="traversal_pen_control.csv" data-speed="50" data-resolution="10000" data-scale="1.2" data-linewidth="1" data-circles="1500" data-max-freq="2000" data-max-circle-size="1000000" data-axis-mode="two_true" data-rotation-mode="fixed" data-offset-x="0.09" data-offset-y="0.1" data-global-offset-x="0" data-global-offset-y="50"></canvas>
 
 <div class="screen-content">
     <h1 class="typing-text">Hi I'm Ken, a PhD student at the University of Toronto specializing in wearable sensing.</h1>
-    <h5>
-        <span class="email-text">kenc at cs dot toronto dot edu</span>
-    </h5>
-    <h5>
-        <a href="https://linkedin.com/in/ken-chris" target="_blank" class="social-link" aria-label="LinkedIn Profile">
+    <h5><span class="email-text">kenc at cs dot toronto dot edu</span></h5>
+    <div class="social-links-row">
+        <button class="drawing-config-arrow" id="drawingConfigPrev" aria-label="Previous drawing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+        </button>
+        <div class="social-links">
+        <a href="https://linkedin.com/in/kenneth-christofferson" target="_blank" class="social-link" aria-label="LinkedIn Profile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
@@ -38,7 +101,11 @@
                 <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z" />
             </svg>
         </a>
-    </h5>
+    </div>
+        <button class="drawing-config-arrow" id="drawingConfigNext" aria-label="Next drawing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+        </button>
+    </div>
 
 </div>
 

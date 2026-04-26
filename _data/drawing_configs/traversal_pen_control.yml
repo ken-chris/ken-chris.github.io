@@ -1,8 +1,8 @@
 svg_file: traversal_pen_control.csv
 speed: 50
-resolution: 20000
+resolution: 10000
 linewidth: 1
-circles: 3000
+circles: 1500
 max_freq: 2000
 max_circle_size: 1000000
 axis_mode: two_true

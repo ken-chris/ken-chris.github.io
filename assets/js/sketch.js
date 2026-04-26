@@ -1,6 +1,9 @@
 // Debug flag for visualizing transitions
 const DEBUG_TRANSITIONS = false;
 
+// In-memory session cache — avoids recomputing configs already loaded this session
+const sessionEpicycleCache = {};
+
 // Cache management functions
 function getCacheKey(filename, resolution, scale, axisMode, maxFreq, maxCircleSize, circles) {
     // Generate cache key from parameters
@@ -9,6 +12,9 @@ function getCacheKey(filename, resolution, scale, axisMode, maxFreq, maxCircleSi
 }
 
 function saveCacheData(cacheKey, data) {
+    // Save into session cache for instant reuse within the same page load
+    sessionEpicycleCache[cacheKey] = data;
+
     // Save cache data as downloadable JSON
     const json = JSON.stringify(data, null, 2);
     console.log('=== CACHE DATA READY ===');
@@ -38,10 +44,17 @@ function downloadCache() {
 }
 
 async function loadCacheData(cacheKey) {
+    // Check in-memory session cache first (populated after any computation this session)
+    if (sessionEpicycleCache[cacheKey]) {
+        console.log('✓ Loaded cached epicycles from session cache:', cacheKey);
+        return sessionEpicycleCache[cacheKey];
+    }
     try {
         const response = await fetch(`/assets/epicycle-cache/${cacheKey}.json`);
         if (!response.ok) return null;
         const data = await response.json();
+        // Populate session cache so future switches to this config are instant
+        sessionEpicycleCache[cacheKey] = data;
         console.log('✓ Loaded cached epicycles from:', cacheKey + '.json');
         return data;
     } catch (error) {
@@ -220,6 +233,11 @@ class FourierInitials {
         // Set canvas size
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
+        // Mobile browsers fire visualViewport resize when the address bar slides in/out
+        // without triggering window resize — causing centerX/Y to drift
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => this.resizeCanvas());
+        }
 
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
@@ -1085,7 +1103,7 @@ class FourierInitials {
 
         this.connectionLines.forEach(line => {
             const age = now - line.timestamp;
-            const alpha = Math.max(0, 0.05 * (1 - age / fadeTime));
+            const alpha = Math.max(0, 0.075 * (1 - age / fadeTime));
 
             this.ctx.globalAlpha = alpha;
             this.ctx.beginPath();
@@ -1414,65 +1432,89 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
     console.log('=== Loading SVG:', filename, '===');
     console.time('Total SVG Load Time');
 
-    fetch(`/assets/svg/${filename}`)
-        .then(response => response.text())
-        .then(svgText => {
-            console.log('SVG fetched successfully');
+    const cacheKey = getCacheKey(filename, resolution, scale, axisMode, maxFreq, maxCircleSize, circles);
+    console.log('Cache key:', cacheKey);
 
-            // Find ALL path d attributes, not just the first one
-            const pathMatches = svgText.matchAll(/\sd="([^"]+)"/g);
-            const paths = Array.from(pathMatches).map(match => match[1]);
-
-            console.log('Found', paths.length, 'path(s) in SVG');
-
-            if (paths.length === 0) {
-                console.error('No paths found in SVG file');
-                return;
-            }
+    loadCacheData(cacheKey).then(cachedData => {
+        if (cachedData) {
+            console.log('Using cached epicycles for SVG, skipping DFT computation');
 
             if (currentAnimation) currentAnimation.stop();
 
-            // Combine all paths - just concatenate with spaces (paths already have M commands)
-            const combinedPath = paths.join(' ');
-            console.log('Combined path data length:', combinedPath.length, 'characters');
+            const offsetPath = cachedData.combinedPath;
 
-            console.time('Parse SVG Path');
-            const points = parseSVGPath(combinedPath, resolution);
-            console.timeEnd('Parse SVG Path');
+            const canvas = document.getElementById('sketchCanvas');
+            const displayWidth = canvas.offsetWidth || canvas.width;
+            const displayHeight = canvas.offsetHeight || canvas.height;
+            const largeRadius = Math.min(displayWidth, displayHeight) * 0.35;
+
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            offsetPath.forEach(p => {
+                minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+                minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+            });
+            const maxDimension = Math.max(maxX - minX, maxY - minY);
+            const scaleFactor = maxDimension > 0 ? (2 * largeRadius * scale) / maxDimension : 1;
+
+            const scaledPath = scaleToFit(offsetPath, largeRadius * scale);
+
+            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY, true);
+
+            currentAnimation.epicycles1 = cachedData.epicycles1.map(ep => ({ ...ep, amp: ep.amp * scaleFactor }));
+            currentAnimation.epicycles2 = cachedData.epicycles2.map(ep => ({ ...ep, amp: ep.amp * scaleFactor }));
+            if (cachedData.epicycles3) {
+                currentAnimation.epicycles3 = cachedData.epicycles3.map(ep => ({ ...ep, amp: ep.amp * scaleFactor }));
+            }
+
+            currentAnimation.animate();
+            console.timeEnd('Total SVG Load Time');
+            drawReferenceVector(scaledPath);
+            return;
+        }
+
+        // No cache — fetch and compute
+        fetch(`/assets/svg/${filename}`)
+            .then(response => response.text())
+            .then(svgText => {
+                console.log('SVG fetched successfully');
+
+                const pathMatches = svgText.matchAll(/\sd="([^"]+)"/g);
+                const paths = Array.from(pathMatches).map(match => match[1]);
+
+                console.log('Found', paths.length, 'path(s) in SVG');
+
+                if (paths.length === 0) {
+                    console.error('No paths found in SVG file');
+                    return;
+                }
+
+                if (currentAnimation) currentAnimation.stop();
+
+                const combinedPath = paths.join(' ');
+
+                console.time('Parse SVG Path');
+                const points = parseSVGPath(combinedPath, resolution);
+                console.timeEnd('Parse SVG Path');
 
                 console.log('Parsed points count:', points.length);
 
-                // Check for NaN values
                 const nanPoints = points.filter(p => isNaN(p.x) || isNaN(p.y));
                 if (nanPoints.length > 0) {
                     console.error('Found', nanPoints.length, 'points with NaN values!');
-                    console.log('First NaN point:', nanPoints[0]);
-                    console.log('Points around first NaN:', points.slice(Math.max(0, points.indexOf(nanPoints[0]) - 2), points.indexOf(nanPoints[0]) + 3));
                 }
 
-                console.log('First few points:', points.slice(0, 5));
-
-                // Find center and normalize with uniform scaling
                 console.time('Normalize and center');
                 let minX = Infinity, maxX = -Infinity;
                 let minY = Infinity, maxY = -Infinity;
                 points.forEach(p => {
-                    minX = Math.min(minX, p.x);
-                    maxX = Math.max(maxX, p.x);
-                    minY = Math.min(minY, p.y);
-                    maxY = Math.max(maxY, p.y);
+                    minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+                    minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
                 });
 
-                // Center of data
                 const centerX = (minX + maxX) / 2;
                 const centerY = (minY + maxY) / 2;
+                const maxRange = Math.max(maxX - minX, maxY - minY);
 
-                // Use max range to keep uniform scaling
-                const rangeX = maxX - minX;
-                const rangeY = maxY - minY;
-                const maxRange = Math.max(rangeX, rangeY);
-
-                // Center and normalize
                 const normalizedPoints = points.map(p => ({
                     x: (p.x - centerX) / maxRange,
                     y: (p.y - centerY) / maxRange,
@@ -1480,20 +1522,13 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
                 }));
                 console.timeEnd('Normalize and center');
 
-                console.log('After normalization, first few points:', normalizedPoints.slice(0, 5));
-
-                // Apply offsets
                 const offsetPoints = normalizedPoints.map(p => ({
                     x: p.x + offsetX,
                     y: p.y + offsetY,
                     opacity: p.opacity
                 }));
 
-                console.log('After offsets, first few points:', offsetPoints.slice(0, 5));
-
-                // Scale to fit within the large circle
                 const canvas = document.getElementById('sketchCanvas');
-                // Use offsetWidth/offsetHeight to get actual displayed size, not internal resolution
                 const displayWidth = canvas.offsetWidth || canvas.width;
                 const displayHeight = canvas.offsetHeight || canvas.height;
                 const largeRadius = Math.min(displayWidth, displayHeight) * 0.35;
@@ -1502,20 +1537,55 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
                 const scaledPoints = scaleToFit(offsetPoints, largeRadius * scale);
                 console.timeEnd('Scale to Fit');
 
-                console.log('Canvas display size:', displayWidth, 'x', displayHeight, 'largeRadius:', largeRadius);
-
-                console.log('After scaling, first few points:', scaledPoints.slice(0, 5));
-
                 console.time('Create FourierInitials');
                 currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPoints, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY);
                 console.timeEnd('Create FourierInitials');
                 console.timeEnd('Total SVG Load Time');
 
+                // Save to cache (un-scale epicycles back to offsetPoints space)
+                let offMinX = Infinity, offMaxX = -Infinity, offMinY = Infinity, offMaxY = -Infinity;
+                offsetPoints.forEach(p => {
+                    offMinX = Math.min(offMinX, p.x); offMaxX = Math.max(offMaxX, p.x);
+                    offMinY = Math.min(offMinY, p.y); offMaxY = Math.max(offMaxY, p.y);
+                });
+                const offMaxDim = Math.max(offMaxX - offMinX, offMaxY - offMinY);
+                const saveScaleFactor = offMaxDim > 0 ? (2 * largeRadius * scale) / offMaxDim : 1;
+
+                function unscaleEpicycles(epics) {
+                    if (!epics) return null;
+                    return epics.map(ep => ({
+                        ...ep,
+                        re:  ep.re  / saveScaleFactor,
+                        im:  ep.im  / saveScaleFactor,
+                        amp: ep.amp / saveScaleFactor
+                    }));
+                }
+
+                const cacheData = {
+                    combinedPath: offsetPoints,
+                    segmentBoundaries: null,
+                    epicycles1: unscaleEpicycles(currentAnimation.epicycles1),
+                    epicycles2: unscaleEpicycles(currentAnimation.epicycles2),
+                    epicycles3: unscaleEpicycles(currentAnimation.epicycles3) || null,
+                    metadata: {
+                        filename: filename,
+                        resolution: resolution,
+                        scale: scale,
+                        axisMode: axisMode,
+                        maxFreq: maxFreq,
+                        maxCircleSize: maxCircleSize,
+                        circles: circles,
+                        timestamp: new Date().toISOString()
+                    }
+                };
+
+                saveCacheData(cacheKey, cacheData);
                 drawReferenceVector(scaledPoints);
-        })
-        .catch(error => {
-            console.error('Error loading SVG:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error loading SVG:', error);
+            });
+    });
 }
 
 function loadCSVFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, linewidth = 3, circles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0) {
@@ -1758,12 +1828,32 @@ function computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circl
             console.timeEnd('Total CSV Load Time');
 
             // Save computed data to cache (save offsetPath before screen-dependent scaling)
+            // Epicycles were computed from scaledPath (screen-space), so we must un-scale them
+            // back to offsetPath space before saving so the load-time scaleFactor is correct.
+            let offMinX = Infinity, offMaxX = -Infinity, offMinY = Infinity, offMaxY = -Infinity;
+            offsetPath.forEach(p => {
+                offMinX = Math.min(offMinX, p.x); offMaxX = Math.max(offMaxX, p.x);
+                offMinY = Math.min(offMinY, p.y); offMaxY = Math.max(offMaxY, p.y);
+            });
+            const offMaxDim = Math.max(offMaxX - offMinX, offMaxY - offMinY);
+            const saveScaleFactor = offMaxDim > 0 ? (2 * largeRadius * scale) / offMaxDim : 1;
+
+            function unscaleEpicycles(epics) {
+                if (!epics) return null;
+                return epics.map(ep => ({
+                    ...ep,
+                    re:  ep.re  / saveScaleFactor,
+                    im:  ep.im  / saveScaleFactor,
+                    amp: ep.amp / saveScaleFactor
+                }));
+            }
+
             const cacheData = {
                 combinedPath: offsetPath,
                 segmentBoundaries: segmentBoundaries,
-                epicycles1: currentAnimation.epicycles1,
-                epicycles2: currentAnimation.epicycles2,
-                epicycles3: currentAnimation.epicycles3 || null,
+                epicycles1: unscaleEpicycles(currentAnimation.epicycles1),
+                epicycles2: unscaleEpicycles(currentAnimation.epicycles2),
+                epicycles3: unscaleEpicycles(currentAnimation.epicycles3) || null,
                 metadata: {
                     filename: filename,
                     resolution: resolution,

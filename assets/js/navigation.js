@@ -172,40 +172,73 @@
         });
     }
 
-    function toggleCard(card) {
-        const isExpanded = card.getAttribute('data-expanded') === 'true';
-        const expandableContent = card.querySelector('.research-card-expandable');
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
 
-        if (!expandableContent) return;
+// Drawing config toggle (prev/next arrows on welcome screen)
+(function() {
+    function init() {
+        const prevBtn = document.getElementById('drawingConfigPrev');
+        const nextBtn = document.getElementById('drawingConfigNext');
+        if (!prevBtn || !nextBtn) return;
 
-        // Toggle the expanded state
-        card.setAttribute('data-expanded', (!isExpanded).toString());
-
-        // Add accessibility attributes
-        const toggleButton = card.querySelector('.research-card-toggle');
-        if (toggleButton) {
-            toggleButton.setAttribute('aria-expanded', (!isExpanded).toString());
-            toggleButton.setAttribute('aria-label', isExpanded ? 'Expand card' : 'Collapse card');
+        const configs = window.drawingConfigs;
+        if (!configs || configs.length <= 1) {
+            prevBtn.style.visibility = 'hidden';
+            nextBtn.style.visibility = 'hidden';
+            return;
         }
 
-        // Update expandable content max-height for smooth animation
-        if (!isExpanded) {
-            // Expanding: set max-height to the scroll height
-            expandableContent.style.maxHeight = expandableContent.scrollHeight + 'px';
-        } else {
-            // Collapsing: set max-height to 0
-            expandableContent.style.maxHeight = '0px';
-        }
+        let activeKey = window.activeDrawingConfig || configs[0].key;
+        let currentIndex = configs.findIndex(function(c) { return c.key === activeKey; });
+        if (currentIndex === -1) currentIndex = 0;
 
-        // Reset max-height after animation completes to handle dynamic content
-        setTimeout(function() {
-            if (!isExpanded) {
-                expandableContent.style.maxHeight = 'none';
+        function loadConfig(index) {
+            const cfg = configs[index];
+            const canvas = document.getElementById('sketchCanvas');
+            if (!canvas) return;
+
+            canvas.setAttribute('data-svg-file', cfg.svg_file);
+            canvas.setAttribute('data-speed', cfg.speed);
+            canvas.setAttribute('data-resolution', cfg.resolution);
+            canvas.setAttribute('data-scale', cfg.scale);
+            canvas.setAttribute('data-linewidth', cfg.linewidth);
+            canvas.setAttribute('data-circles', cfg.circles);
+            canvas.setAttribute('data-max-freq', cfg.max_freq);
+            canvas.setAttribute('data-max-circle-size', cfg.max_circle_size);
+            canvas.setAttribute('data-axis-mode', cfg.axis_mode);
+            canvas.setAttribute('data-rotation-mode', cfg.rotation_mode);
+            canvas.setAttribute('data-offset-x', cfg.offset_x);
+            canvas.setAttribute('data-offset-y', cfg.offset_y);
+            canvas.setAttribute('data-global-offset-x', cfg.global_offset_x);
+            canvas.setAttribute('data-global-offset-y', cfg.global_offset_y);
+
+            const svgFile = cfg.svg_file;
+            if (svgFile && svgFile !== 'null' && svgFile.trim() !== '') {
+                if (svgFile.toLowerCase().endsWith('.csv')) {
+                    loadCSVFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y);
+                } else {
+                    loadSVGFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y);
+                }
             }
-        }, 350);
+        }
+
+        prevBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex - 1 + configs.length) % configs.length;
+            loadConfig(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % configs.length;
+            loadConfig(currentIndex);
+        });
     }
 
-    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

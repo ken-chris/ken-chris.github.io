@@ -9,6 +9,6 @@ axis_mode: two_true
 rotation_mode: fixed
 scale: 1.20
 offset_x: .09
-offset_y: .1
+offset_y: .2
 global_offset_x: 0
 global_offset_y: 50

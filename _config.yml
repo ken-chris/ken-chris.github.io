@@ -1,0 +1,35 @@
+# Site settings
+title: Your Name
+email: your-email@example.com
+description: >-
+  A personal website
+baseurl: ""
+url: ""
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Debug — set to true to enable browser console logging
+debug: false
+
+# Collections
+collections:
+  screens:
+    output: false
+    sort_by: order
+  research:
+    output: false
+    sort_by: date
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

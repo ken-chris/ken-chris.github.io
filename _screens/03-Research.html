@@ -1,0 +1,54 @@
+---
+order: 3
+title: Research
+---
+
+<div class="screen-content">
+    <h2>Research</h2>
+    {% assign displayed = site.research | where_exp: "item", "item.display != false" | sort: 'date' | reverse %}
+    <div class="research-container">
+        <!-- Research Cards Grid -->
+        <div class="research-grid">
+            {% for item in displayed %}
+            <div class="research-card" data-expanded="false" data-year="{{ item.date | date: '%Y' }}">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">{{ item.date | date: "%B %Y" }}</div>
+                    <h3 class="research-card-title">{{ item.title }}</h3>
+                    {% if item.venue or item.paper %}
+                    <div class="research-card-venue-row">
+                        {% if item.paper %}
+                        <a href="{{ item.paper }}" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+                            </svg>
+                        </a>
+                        {% endif %}
+                        {% if item.venue %}
+                        <span class="research-card-venue">{{ item.venue }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    {% if item.description %}
+                    <p class="research-card-description">{{ item.description }}</p>
+                    {% endif %}
+                    {% if item.tags %}
+                    <div class="research-card-tags">
+                        {% for tag in item.tags %}
+                        <span class="research-tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

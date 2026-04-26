@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Your Name</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        
+<section class="screen has-canvas">
+    <div class="input-controls">
+    <button id="useKCBtn" class="active">Use KC</button>
+    <button id="drawBtn">Draw</button>
+    <input type="file" id="svgUpload" accept=".svg" style="display: none;" />
+    <button id="uploadBtn">Upload SVG</button>
+    <button id="clearBtn" style="display: none;">Clear Drawing</button>
+</div>
+
+<canvas id="referenceCanvas" style="display: none;"></canvas>
+
+<canvas id="sketchCanvas" data-svg-file="traversal_pen_control.csv" data-speed="50" data-resolution="20000" data-scale="1.2" data-linewidth="1" data-circles="3000" data-max-freq="2000" data-max-circle-size="1000000" data-axis-mode="two_true" data-rotation-mode="fixed" data-offset-x="0.09" data-offset-y="0.1" data-global-offset-x="0" data-global-offset-y="50"></canvas>
+
+<div class="screen-content">
+    <h1 class="typing-text">Hi I'm Ken, a PhD student at the University of Toronto specializing in wearable sensing.</h1>
+    <h5>
+        <span class="email-text">kenc at cs dot toronto dot edu</span>
+    </h5>
+    <h5>
+        <a href="https://linkedin.com/in/ken-chris" target="_blank" class="social-link" aria-label="LinkedIn Profile">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            </svg>
+        </a>
+        <a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank" class="social-link" aria-label="Google Scholar Profile">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z" />
+            </svg>
+        </a>
+    </h5>
+
+</div>
+
+</section>
+
+<section class="screen">
+    <div class="screen-content">
+<h2>👋 About Me</h2>
+<h3> 
+I am a PhD student advised by Alex Mariakakis and Joseph Cafazzo who lead the Computational Health and Interaction (CHAI) lab at the University of Toronto Department of Computer Science and the Centre for E-Health Innovation at the University Health Network respectively.
+
+My research focuses on using the sensors embedded in wearable devices and 
+novel machine learning techniques to acquire information relevant to human
+ health as well as exploring how that information is best used to improve health outcomes.
+  I am interested in a broad array of sensing modalities and use cases, please check out my research and projects pages for more.
+</h3>
+<div class="spacer" style="height: 2em;"></div>
+
+<h2>🏫 Education</h2>
+<ul style="list-style: none; padding-left: 0; font-size: 1.17em;">
+  <li>&#x2B1C; PhD Computer Science — University of Toronto <em>(in progress)</em></li>
+  <li>&#x2705; MS Engineering, Data Science, and Information Technology — Tsinghua University (2021)</li>
+  <li>&#x2705; MS Technology Innovation — University of Washington (2021)</li>
+  <li>&#x2705; BA International Studies — American University (2011)</li>
+</ul>
+<div class="spacer" style="height: 2em;"></div>
+
+<h2>🧰 Mentoring and Outreach</h2>
+<ul style="list-style: none; padding-left: 0; font-size: 1.17em;">
+  <li><a href="https://gixnetwork.org/community/outreach-programs/access-computing/">Access Computing Program 2022</a> — Mentor</li>
+  <li><a href="https://www.physics.utoronto.ca/physics-at-uoft/outreach/pursue-stem/">Pursue STEM</a> 2022</li>
+</ul>
+
+<div class="spacer" style="height: 2em;"></div>
+
+<h2>📨 Get In Touch</h2>
+<h3>
+kenc at cs dot toronto dot edu
+</h3>
+</div>
+
+</section>
+
+<section class="screen">
+    <div class="screen-content">
+    <h2>Research</h2>
+    
+    <div class="research-container">
+        <!-- Research Cards Grid -->
+        <div class="research-grid">
+            
+            <div class="research-card" data-expanded="false" data-year="2025">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">December 2025</div>
+                    <h3 class="research-card-title">ArtEARial - Arterial Pressure Waveform Reconstruction Using Earbud Audio</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://dl.acm.org/doi/abs/10.1145/3770634" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">IMWUT</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A method of reconstructing the arterial pressure waveform using audio recorded by an active noise-cancelling earbud.</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">earables</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                        <span class="research-tag">cardiovascular</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2025">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">January 2025</div>
+                    <h3 class="research-card-title">Health recommender systems to facilitate collaborative decision-making in chronic disease management, a scoping review</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://journals.sagepub.com/doi/full/10.1177/20552076241309386" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">Digital Health</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A scoping review regarding health recommender systems applied to choronic illness decision support.</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">recommender systems</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">chronic illness</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2024">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">December 2024</div>
+                    <h3 class="research-card-title">DreamCatcher - A Wearer-aware Multi-modal Sleep Event Dataset Based on Earables in Non-restrictive Environments</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/9ab8bb568825d49ce31aa87b7e2f4ad7-Paper-Datasets_and_Benchmarks_Track.pdf" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">Advances in Neural Information Processing Systems</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A dataset of multi-subject sleep sounds for use in wearable sleep monitoring system validation.</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">earables</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                        <span class="research-tag">sleep sensing</span>
+                        
+                        <span class="research-tag">dataset</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2024">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">October 2024</div>
+                    <h3 class="research-card-title">On the production and measurement of cardiac sounds in the ear canal</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://dl.acm.org/doi/pdf/10.1145/3675094.3680526" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">IMWUT::EarComp</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">Heart in your ear? How might that happen?</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">earables</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                        <span class="research-tag">cardiovascular</span>
+                        
+                        <span class="research-tag">signal processing</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2024">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">October 2024</div>
+                    <h3 class="research-card-title">Understanding wrist skin temperature changes to hormone variations across the menstrual cycle</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://www.nature.com/articles/s44294-024-00037-9" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">NPJ Womens Health</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">This study examines the relationship between hormonal changes and peripheral body tempurature with a focus on nightly wrist skin temperature (WST).</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">womens health</span>
+                        
+                        <span class="research-tag">wearable sensing</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2023">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">September 2023</div>
+                    <h3 class="research-card-title">ReHEarSSE - Recognizing Hidden-in-the-Ear Silently Spelled Expressions using Ultrasonic Occluded Ear Canal Deformation Analysis</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://dl.acm.org/doi/pdf/10.1145/3613904.3642095" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">CHI</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">Silently spoken (i.e., mouthed) letter recognition using an ultrasonic Orthogonal Frequency Division Multiplexing (OFDM) chirp, emitted by an earbud, to detect small changes in ear canal deformation resulting from jaw, tongue, and facial muscle movement.</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">ultrasonic sensing</span>
+                        
+                        <span class="research-tag">earbuds</span>
+                        
+                        <span class="research-tag">HCI</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2023">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">May 2023</div>
+                    <h3 class="research-card-title">EarSteth - Cardiac Auscultation Audio Reconstruction Using Earbuds</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://ieeexplore.ieee.org/abstract/document/10781641" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">IEEE Engineering in Medicine and Biology Society</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A system that leverages consumer-grade active noise-cancelling earbuds to reconstruct cardiac auscultation audio (i.e., a phonocardiagram)</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">super-resolution</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2022">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">March 2022</div>
+                    <h3 class="research-card-title">Sleep Sound Classification Using ANC-Enabled Earbuds</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://ieeexplore.ieee.org/document/9767394" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">PERCOM::HCCS</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">An ultra light-weight human sleep sound classification method</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">classification</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2022">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">February 2022</div>
+                    <h3 class="research-card-title">An AI Driven, Mechanistically-Grounded Geospatial Liquefaction Model for Rapid Response and Scenario Planning</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://www.sciencedirect.com/science/article/pii/S026772612200197X" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">Soil Dynamics and Earthquake Engineering</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A series of geospatial models for predicting soil liquefaction infer subsurface traits via satellite remote sensing and mapped information</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">geotechnical engineering</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="research-card" data-expanded="false" data-year="2020">
+                <!-- Always visible content (collapsed state) -->
+                <div class="research-card-header">
+                    <div class="research-card-date">November 2020</div>
+                    <h3 class="research-card-title">Induced Acoustic Resonance for Noninvasive Bone Fracture Detection Using Digital Signal Processing and Machine Learning</h3>
+                    
+                    <div class="research-card-venue-row">
+                        
+                        <a href="https://ieeexplore.ieee.org/document/9342913" target="_blank" class="research-card-link" aria-label="View Paper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+                            </svg>
+                        </a>
+                        
+                        
+                        <span class="research-card-venue">IEEE GHTC</span>
+                        
+                    </div>
+                    
+                    <button class="research-card-toggle" aria-label="Expand card">
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <!-- Expandable content -->
+                <div class="research-card-expandable">
+                    
+                    <p class="research-card-description">A low cost embedded system for bone fracture detection</p>
+                    
+                    
+                    <div class="research-card-tags">
+                        
+                        <span class="research-tag">audio</span>
+                        
+                        <span class="research-tag">machine learning</span>
+                        
+                        <span class="research-tag">classification</span>
+                        
+                        <span class="research-tag">health</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+</section>
+
+<section class="screen">
+    <div class="screen-content">
+    <h2>Projects</h2>
+    <h3>🚧👷Under Construction👷🚧</h3>
+</div>
+
+</section>
+
+
+    </div>
+    <script>window.DEBUG = false;</script>
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/sketch.js"></script>
+</body>
+</html>

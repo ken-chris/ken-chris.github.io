@@ -1,0 +1,14 @@
+svg_file: traversal_pen_control.csv
+speed: 50
+resolution: 20000
+linewidth: 1
+circles: 3000
+max_freq: 2000
+max_circle_size: 1000000
+axis_mode: two_true
+rotation_mode: fixed
+scale: 1.20
+offset_x: .09
+offset_y: .1
+global_offset_x: 0
+global_offset_y: 50

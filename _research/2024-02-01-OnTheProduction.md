@@ -12,7 +12,7 @@ image:
   height: 300
   alt: 
   
-description: Heart in your ear? How might that happen?
+description: A of test various hypotheses related to the production of heart sounds in the ear canal.
 venue: IMWUT::EarComp
 paper: "https://dl.acm.org/doi/pdf/10.1145/3675094.3680526"
 display: True

@@ -145,6 +145,11 @@
 
 // Research card expand/collapse functionality
 (function() {
+    function toggleCard(card) {
+        const isExpanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
+    }
+
     function init() {
         const researchCards = document.querySelectorAll('.research-card');
 

@@ -15,6 +15,9 @@ plugins:
 # Debug — set to true to enable browser console logging
 debug: false
 
+# Version for cache busting
+version: "1.0.1"
+
 # Collections
 collections:
   screens:

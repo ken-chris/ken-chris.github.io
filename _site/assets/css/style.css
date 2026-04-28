@@ -187,7 +187,7 @@ h3 {
     white-space: nowrap;
     border-right: 3px solid #ecf0f1;
     max-width: 0;
-    animation: typing 8s steps(89, end), blink-caret 2s step-end 4;
+    animation: typing 2s steps(10, end), blink-caret 1s step-end 4;
     animation-fill-mode: forwards;
 }
 
@@ -206,7 +206,7 @@ h3 {
         max-width: 0;
     }
     to {
-        max-width: 89ch;
+        max-width: 10ch;
     }
 }
 

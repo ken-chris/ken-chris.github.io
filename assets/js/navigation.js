@@ -222,13 +222,14 @@
             canvas.setAttribute('data-offset-y', cfg.offset_y);
             canvas.setAttribute('data-global-offset-x', cfg.global_offset_x);
             canvas.setAttribute('data-global-offset-y', cfg.global_offset_y);
+            canvas.setAttribute('data-loop-delay', cfg.loop_delay);
 
             const svgFile = cfg.svg_file;
             if (svgFile && svgFile !== 'null' && svgFile.trim() !== '') {
                 if (svgFile.toLowerCase().endsWith('.csv')) {
-                    loadCSVFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y);
+                    loadCSVFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y, cfg.loop_delay);
                 } else {
-                    loadSVGFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y);
+                    loadSVGFile(svgFile, cfg.speed, cfg.resolution, cfg.scale, cfg.linewidth, cfg.circles, cfg.max_freq, cfg.max_circle_size, cfg.axis_mode, cfg.rotation_mode, cfg.offset_x, cfg.offset_y, cfg.global_offset_x, cfg.global_offset_y, cfg.loop_delay);
                 }
             }
         }

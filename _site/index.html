@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <title>Home | Kenneth Christofferson</title>
-    <link rel="stylesheet" href="/assets/css/style.css?v=1777334690">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1.0.1-1777383199">
 </head>
 <body>
     <div class="container">
@@ -18,7 +18,7 @@ window.drawingConfigs = [
   {
     "key": "test_text",
     "svg_file": "test.svg",
-    "speed": 50,
+    "speed": 5,
     "resolution": 10000,
     "scale": 1.2,
     "linewidth": 1,
@@ -30,7 +30,27 @@ window.drawingConfigs = [
     "offset_x": -0.01,
     "offset_y": -0.1,
     "global_offset_x": 0,
-    "global_offset_y": 50
+    "global_offset_y": 50,
+    "loop_delay": 2000
+  },
+
+  {
+    "key": "traversal_jupyter",
+    "svg_file": "jupyter_lr.csv",
+    "speed": 25,
+    "resolution": 20000,
+    "scale": 1.2,
+    "linewidth": 1,
+    "circles": 4000,
+    "max_freq": 5000,
+    "max_circle_size": 1000000,
+    "axis_mode": "two_true",
+    "rotation_mode": "fixed",
+    "offset_x": 0,
+    "offset_y": -0.02,
+    "global_offset_x": 0,
+    "global_offset_y": 50,
+    "loop_delay": 3000
   },
 
   {
@@ -48,25 +68,27 @@ window.drawingConfigs = [
     "offset_x": 0.09,
     "offset_y": 0.1,
     "global_offset_x": 0,
-    "global_offset_y": 50
+    "global_offset_y": 50,
+    "loop_delay": 1500
   },
 
   {
-    "key": "traversal_ranier",
-    "svg_file": "traversal_paths_ranier.csv",
-    "speed": 50,
+    "key": "traversal_rainier",
+    "svg_file": "traversal_paths_rainier.csv",
+    "speed": 25,
     "resolution": 20000,
     "scale": 1.4,
     "linewidth": 1,
     "circles": 4000,
-    "max_freq": 3000,
+    "max_freq": 5000,
     "max_circle_size": 1000000,
     "axis_mode": "two_true",
     "rotation_mode": "fixed",
     "offset_x": 0,
     "offset_y": -0.05,
     "global_offset_x": 0,
-    "global_offset_y": 50
+    "global_offset_y": 50,
+    "loop_delay": 3000
   }
 
 ];
@@ -83,10 +105,10 @@ window.activeDrawingConfig = "traversal_pen_control";
 
 <canvas id="referenceCanvas" style="display: none;"></canvas>
 
-<canvas id="sketchCanvas" data-svg-file="traversal_pen_control.csv" data-speed="50" data-resolution="10000" data-scale="1.2" data-linewidth="1" data-circles="1500" data-max-freq="2000" data-max-circle-size="1000000" data-axis-mode="two_true" data-rotation-mode="fixed" data-offset-x="0.09" data-offset-y="0.1" data-global-offset-x="0" data-global-offset-y="50"></canvas>
+<canvas id="sketchCanvas" data-svg-file="traversal_pen_control.csv" data-speed="50" data-resolution="10000" data-scale="1.2" data-linewidth="1" data-circles="1500" data-max-freq="2000" data-max-circle-size="1000000" data-axis-mode="two_true" data-rotation-mode="fixed" data-offset-x="0.09" data-offset-y="0.1" data-global-offset-x="0" data-global-offset-y="50" data-loop-delay="1500"></canvas>
 
 <div class="screen-content">
-    <h1 class="typing-text">Hi I'm Ken, a PhD student at the University of Toronto specializing in wearable sensing.</h1>
+    <h1 class="typing-text">Hi I'm Ken</h1>
     <h5><span class="email-text">kenc at cs dot toronto dot edu</span></h5>
     <div class="social-links-row">
         <button class="drawing-config-arrow" id="drawingConfigPrev" aria-label="Previous drawing">
@@ -626,7 +648,7 @@ kenc at cs dot toronto dot edu
 
     </div>
     <script>window.DEBUG = false;</script>
-    <script src="/assets/js/navigation.js?v=1777334690"></script>
-    <script src="/assets/js/sketch.js?v=1777334690"></script>
+    <script src="/assets/js/navigation.js?v=1.0.1-1777383199"></script>
+    <script src="/assets/js/sketch.js?v=1.0.1-1777383199"></script>
 </body>
 </html>

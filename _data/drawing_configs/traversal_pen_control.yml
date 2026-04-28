@@ -12,3 +12,4 @@ offset_x: .09
 offset_y: .1
 global_offset_x: 0
 global_offset_y: 50
+loop_delay: 1500  # 1.5 second delay between loops

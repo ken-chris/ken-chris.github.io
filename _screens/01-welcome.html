@@ -23,7 +23,8 @@ window.drawingConfigs = [
     "offset_x": {{ config[1].offset_x | default: 0 }},
     "offset_y": {{ config[1].offset_y | default: 0 }},
     "global_offset_x": {{ config[1].global_offset_x | default: 0 }},
-    "global_offset_y": {{ config[1].global_offset_y | default: 0 }}
+    "global_offset_y": {{ config[1].global_offset_y | default: 0 }},
+    "loop_delay": {{ config[1].loop_delay | default: 0 }}
   }{% unless forloop.last %},{% endunless %}
 {% endfor %}
 ];
@@ -40,10 +41,10 @@ window.activeDrawingConfig = "{{ page.drawing_config }}";
 
 <canvas id="referenceCanvas" style="display: none;"></canvas>
 {% assign cfg = site.data.drawing_configs[page.drawing_config] %}
-<canvas id="sketchCanvas" data-svg-file="{{ cfg.svg_file }}" data-speed="{{ cfg.speed }}" data-resolution="{{ cfg.resolution }}" data-scale="{{ cfg.scale }}" data-linewidth="{{ cfg.linewidth }}" data-circles="{{ cfg.circles }}" data-max-freq="{{ cfg.max_freq }}" data-max-circle-size="{{ cfg.max_circle_size }}" data-axis-mode="{{ cfg.axis_mode }}" data-rotation-mode="{{ cfg.rotation_mode }}" data-offset-x="{{ cfg.offset_x }}" data-offset-y="{{ cfg.offset_y }}" data-global-offset-x="{{ cfg.global_offset_x }}" data-global-offset-y="{{ cfg.global_offset_y }}"></canvas>
+<canvas id="sketchCanvas" data-svg-file="{{ cfg.svg_file }}" data-speed="{{ cfg.speed }}" data-resolution="{{ cfg.resolution }}" data-scale="{{ cfg.scale }}" data-linewidth="{{ cfg.linewidth }}" data-circles="{{ cfg.circles }}" data-max-freq="{{ cfg.max_freq }}" data-max-circle-size="{{ cfg.max_circle_size }}" data-axis-mode="{{ cfg.axis_mode }}" data-rotation-mode="{{ cfg.rotation_mode }}" data-offset-x="{{ cfg.offset_x }}" data-offset-y="{{ cfg.offset_y }}" data-global-offset-x="{{ cfg.global_offset_x }}" data-global-offset-y="{{ cfg.global_offset_y }}" data-loop-delay="{{ cfg.loop_delay }}"></canvas>
 
 <div class="screen-content">
-    <h1 class="typing-text">Hi I'm Ken, a PhD student at the University of Toronto specializing in wearable sensing.</h1>
+    <h1 class="typing-text">Hi I'm Ken</h1>
     <h5><span class="email-text">kenc at cs dot toronto dot edu</span></h5>
     <div class="social-links-row">
         <button class="drawing-config-arrow" id="drawingConfigPrev" aria-label="Previous drawing">

@@ -1,5 +1,5 @@
 svg_file: test.svg
-speed: 50
+speed: 5
 resolution: 10000
 linewidth: 1
 circles: 500
@@ -12,3 +12,4 @@ offset_x: -.01
 offset_y: -.1
 global_offset_x: 0
 global_offset_y: 50
+loop_delay: 2000  # Delay in milliseconds between animation loops

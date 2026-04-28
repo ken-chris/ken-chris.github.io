@@ -1,0 +1,15 @@
+svg_file: traversal_paths_rainier.csv
+speed: 25
+resolution: 20000
+linewidth: 1
+circles: 4000
+max_freq: 5000
+max_circle_size: 1000000
+axis_mode: two_true
+rotation_mode: fixed
+scale: 1.4
+offset_x: 0
+offset_y: -.05
+global_offset_x: 0
+global_offset_y: 50
+loop_delay: 3000  # 3 second delay between loops

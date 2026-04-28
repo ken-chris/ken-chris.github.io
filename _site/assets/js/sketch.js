@@ -210,7 +210,7 @@ function normalizeAndOffsetPath(points, offsetX, offsetY) {
 }
 
 class FourierInitials {
-    constructor(canvasId, mode = 'kc', customPath = null, speed = 0.3, linewidth = 3, numCircles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', segmentBoundaries = null, offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0, skipDFT = false) {
+    constructor(canvasId, mode = 'kc', customPath = null, speed = 0.3, linewidth = 3, numCircles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', segmentBoundaries = null, offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0, skipDFT = false, loopDelay = 0) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.mode = mode;
@@ -227,6 +227,10 @@ class FourierInitials {
         this.offsetY = offsetY;
         this.globalOffsetX = globalOffsetX;
         this.globalOffsetY = globalOffsetY;
+        this.loopDelay = loopDelay; // Delay in milliseconds between loops
+        this.isInDelay = false;
+        this.delayStartTime = 0;
+        console.log('FourierInitials constructor: loopDelay =', loopDelay);
         this.isDrawing = false;
         this.drawnPoints = [];
 
@@ -773,6 +777,22 @@ class FourierInitials {
     }
 
     update() {
+        // Check if we're in a delay period
+        if (this.isInDelay) {
+            const currentTime = Date.now();
+            if (currentTime - this.delayStartTime >= this.loopDelay) {
+                // Delay period is over, resume animation
+                this.isInDelay = false;
+                this.time = 0;
+                // Clear the path NOW (after delay completes)
+                this.path = [];
+                console.log('Delay complete, clearing path and restarting animation');
+            } else {
+                // Still in delay, return last point without updating
+                return this.path[this.path.length - 1] || { x: this.centerX, y: this.centerY, opacity: 1.0 };
+            }
+        }
+
         const dt = (Math.PI * 2) / this.kcPath.length;
         const prevTime = this.time;
         this.time += dt * this.speed;
@@ -809,10 +829,12 @@ class FourierInitials {
                 x = endpoint1.x;
                 y = endpoint2.y;
 
+                /*
                 // Debug: log first few points
                 if (this.path.length < 5) {
                     console.log(`Update Point ${this.path.length}: red_end=(${endpoint1.x.toFixed(1)}, ${endpoint1.y.toFixed(1)}), blue_end=(${endpoint2.x.toFixed(1)}, ${endpoint2.y.toFixed(1)}), intersection=(${x.toFixed(1)}, ${y.toFixed(1)})`);
                 }
+                    */
 
             } else if (this.axisMode === 'two') {
                 // Standard two-axis - separate X/Y reconstruction
@@ -889,20 +911,39 @@ class FourierInitials {
                 // Multi-path mode: switch to next path
                 this.currentPathIndex++;
                 if (this.currentPathIndex >= this.pathEpicycles.length) {
-                    // All paths complete, loop back to start and clear
+                    // All paths complete, loop back to start
                     this.currentPathIndex = 0;
-                    this.path = [];
+
+                    // Start delay if configured (DON'T clear path yet)
+                    if (this.loopDelay > 0) {
+                        console.log('Starting multi-path loop delay:', this.loopDelay, 'ms');
+                        this.isInDelay = true;
+                        this.delayStartTime = Date.now();
+                    } else {
+                        console.log('No multi-path loop delay configured, restarting immediately');
+                        this.path = []; // Only clear immediately if no delay
+                        this.time = 0;
+                    }
                 } else {
                     // Switch to next path but keep accumulated drawing
                     // Don't clear this.path
+                    this.time = 0;
                 }
-                this.switchToPath(this.currentPathIndex);
+                if (!this.isInDelay) {
+                    this.switchToPath(this.currentPathIndex);
+                }
             } else {
-                // Single path mode: clear and restart
-                this.path = [];
+                // Single path mode: start delay if configured (DON'T clear path yet)
+                if (this.loopDelay > 0) {
+                    console.log('Starting single path loop delay:', this.loopDelay, 'ms');
+                    this.isInDelay = true;
+                    this.delayStartTime = Date.now();
+                } else {
+                    console.log('No single path loop delay configured, restarting immediately');
+                    this.path = []; // Only clear immediately if no delay
+                    this.time = 0;
+                }
             }
-
-            this.time = 0;
         }
 
         // Return the last sampled point
@@ -923,7 +964,7 @@ class FourierInitials {
         // Large encompassing circle radius
         const largeRadius = Math.min(this.canvas.width, this.canvas.height) * 0.35;
 
-        // Draw large encompassing circle
+        // Always draw large encompassing circle (keep visible during delay)
         this.ctx.globalAlpha = 0.15;
         this.ctx.beginPath();
         this.ctx.arc(this.centerX, this.centerY, largeRadius, 0, Math.PI * 2);
@@ -933,9 +974,11 @@ class FourierInitials {
 
         // Get current time for connection line management
         const now = Date.now();
-        const fadeTime = 500; // milliseconds
+        const fadeTime = 5; // milliseconds
 
-        if (this.axisMode === 'two_true') {
+        // Skip epicycle drawing if in delay period (hide epicycles when animation is paused)
+        if (!this.isInDelay) {
+            if (this.axisMode === 'two_true') {
             // Geometrically correct two-axis: intersection visualization
             const baseAngle = this.rotationMode === 'rotating' ? this.time : 0;
 
@@ -971,14 +1014,28 @@ class FourierInitials {
             const redEndpoint = this.getAxisAlignedChainEndpoint(this.epicycles1, chain1StartX, chain1StartY, 'horizontal');
             const blueEndpoint = this.getAxisAlignedChainEndpoint(this.epicycles2, chain2StartX, chain2StartY, 'vertical');
 
+            // Debug: Draw small dots at calculated endpoints to verify connection accuracy
+            this.ctx.globalAlpha = 1.0;
+            this.ctx.fillStyle = '#e74c3c';
+            this.ctx.beginPath();
+            this.ctx.arc(redEndpoint.x, redEndpoint.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            this.ctx.fillStyle = '#3498db';
+            this.ctx.beginPath();
+            this.ctx.arc(blueEndpoint.x, blueEndpoint.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
             // Intersection: X from red (horizontal chain), Y from blue (vertical chain)
             const intersectionX = redEndpoint.x;
             const intersectionY = blueEndpoint.y;
 
             // Debug: check intersection
+            /*
             if (Math.random() < 0.01) { // Log occasionally
                 console.log(`Draw: point=(${point.x.toFixed(1)}, ${point.y.toFixed(1)}), intersection=(${intersectionX.toFixed(1)}, ${intersectionY.toFixed(1)}), red_end=(${redEndpoint.x.toFixed(1)}, ${redEndpoint.y.toFixed(1)}), blue_end=(${blueEndpoint.x.toFixed(1)}, ${blueEndpoint.y.toFixed(1)})`);
             }
+            */
 
             // Draw axis-aligned lines from chain endpoints to intersection
             // Vertical line from blue endpoint to intersection
@@ -1031,6 +1088,18 @@ class FourierInitials {
             // Get chain endpoints
             const endpoint1 = this.getChainEndpoint(this.epicycles1, chain1StartX, chain1StartY);
             const endpoint2 = this.getChainEndpoint(this.epicycles2, chain2StartX, chain2StartY);
+
+            // Debug: Draw small dots at calculated endpoints to verify connection accuracy
+            this.ctx.globalAlpha = 1.0;
+            this.ctx.fillStyle = '#e74c3c';
+            this.ctx.beginPath();
+            this.ctx.arc(endpoint1.x, endpoint1.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            this.ctx.fillStyle = '#3498db';
+            this.ctx.beginPath();
+            this.ctx.arc(endpoint2.x, endpoint2.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
 
             // Draw direct connection lines from endpoints to traced point
             this.connectionLines.push(
@@ -1085,6 +1154,23 @@ class FourierInitials {
             const endpoint2 = this.getChainEndpoint(this.epicycles2, chain2StartX, chain2StartY);
             const endpoint3 = this.getChainEndpoint(this.epicycles3, chain3StartX, chain3StartY);
 
+            // Debug: Draw small dots at calculated endpoints to verify connection accuracy
+            this.ctx.globalAlpha = 1.0;
+            this.ctx.fillStyle = '#e74c3c';
+            this.ctx.beginPath();
+            this.ctx.arc(endpoint1.x, endpoint1.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            this.ctx.fillStyle = '#3498db';
+            this.ctx.beginPath();
+            this.ctx.arc(endpoint2.x, endpoint2.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            this.ctx.fillStyle = '#2ecc71';
+            this.ctx.beginPath();
+            this.ctx.arc(endpoint3.x, endpoint3.y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+
             // Store new connection lines with timestamp
             this.connectionLines.push(
                 { from: endpoint1, to: point, timestamp: now },
@@ -1103,7 +1189,7 @@ class FourierInitials {
 
         this.connectionLines.forEach(line => {
             const age = now - line.timestamp;
-            const alpha = Math.max(0, 0.075 * (1 - age / fadeTime));
+            const alpha = Math.max(0, 0.5 * (1 - age / fadeTime));
 
             this.ctx.globalAlpha = alpha;
             this.ctx.beginPath();
@@ -1113,6 +1199,8 @@ class FourierInitials {
         });
 
         this.ctx.setLineDash([]);
+
+        } // End of epicycle drawing (skip when in delay)
 
         // Draw the traced path
         this.ctx.lineWidth = this.linewidth;
@@ -1136,12 +1224,14 @@ class FourierInitials {
             this.ctx.stroke();
         }
 
-        // Draw current point
-        this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.globalAlpha = 0.9;
-        this.ctx.fill();
+        // Draw current point (only when not in delay)
+        if (!this.isInDelay) {
+            this.ctx.beginPath();
+            this.ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.globalAlpha = 0.9;
+            this.ctx.fill();
+        }
 
         // Restore context after offset transformations
         this.ctx.restore();
@@ -1275,14 +1365,16 @@ class FourierInitials {
         for (let i = 0; i < Math.min(this.numCircles, epicycles.length); i++) {
             const ep = epicycles[i];
             const angle = ep.freq * t + ep.phase;
-            const displacement = ep.amp * Math.cos(angle);
 
+            // Match the visual representation: 90° rotation for vertical axis
             if (axis === 'horizontal') {
-                currentX += displacement;
-                // Y stays constant
+                // Horizontal axis: normal cos/sin
+                currentX += ep.amp * Math.cos(angle);
+                currentY += ep.amp * Math.sin(angle);
             } else {
-                currentY += displacement;
-                // X stays constant
+                // Vertical axis: 90° rotation (cos→Y, sin→X)
+                currentX += ep.amp * Math.sin(angle);
+                currentY += ep.amp * Math.cos(angle);
             }
         }
 
@@ -1416,19 +1508,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const offsetY = parseFloat(canvas.getAttribute('data-offset-y')) || 0;
     const globalOffsetX = parseFloat(canvas.getAttribute('data-global-offset-x')) || 0;
     const globalOffsetY = parseFloat(canvas.getAttribute('data-global-offset-y')) || 0;
+    const loopDelay = parseInt(canvas.getAttribute('data-loop-delay')) || 0;
+
+    console.log('Canvas data attributes - loopDelay:', loopDelay);
 
     // Load SVG if specified, otherwise draw nothing
     if (svgFile && svgFile !== 'null' && svgFile.trim() !== '') {
         // Check file extension to determine format
         if (svgFile.toLowerCase().endsWith('.csv')) {
-            loadCSVFile(svgFile, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, offsetX, offsetY, globalOffsetX, globalOffsetY);
+            loadCSVFile(svgFile, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, offsetX, offsetY, globalOffsetX, globalOffsetY, loopDelay);
         } else {
-            loadSVGFile(svgFile, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, offsetX, offsetY, globalOffsetX, globalOffsetY);
+            loadSVGFile(svgFile, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, offsetX, offsetY, globalOffsetX, globalOffsetY, loopDelay);
         }
     }
 });
 
-function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, linewidth = 3, circles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0) {
+function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, linewidth = 3, circles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0, loopDelay = 0) {
     console.log('=== Loading SVG:', filename, '===');
     console.time('Total SVG Load Time');
 
@@ -1458,7 +1553,7 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
 
             const scaledPath = scaleToFit(offsetPath, largeRadius * scale);
 
-            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY, true);
+            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY, true, loopDelay);
 
             currentAnimation.epicycles1 = cachedData.epicycles1.map(ep => ({ ...ep, amp: ep.amp * scaleFactor }));
             currentAnimation.epicycles2 = cachedData.epicycles2.map(ep => ({ ...ep, amp: ep.amp * scaleFactor }));
@@ -1538,7 +1633,7 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
                 console.timeEnd('Scale to Fit');
 
                 console.time('Create FourierInitials');
-                currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPoints, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY);
+                currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPoints, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, null, offsetX, offsetY, globalOffsetX, globalOffsetY, false, loopDelay);
                 console.timeEnd('Create FourierInitials');
                 console.timeEnd('Total SVG Load Time');
 
@@ -1588,7 +1683,7 @@ function loadSVGFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
     });
 }
 
-function loadCSVFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, linewidth = 3, circles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0) {
+function loadCSVFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, linewidth = 3, circles = 100, maxFreq = Infinity, maxCircleSize = Infinity, axisMode = 'three', rotationMode = 'rotating', offsetX = 0, offsetY = 0, globalOffsetX = 0, globalOffsetY = 0, loopDelay = 0) {
     console.log('=== Loading CSV:', filename, '===');
     console.time('Total CSV Load Time');
 
@@ -1634,7 +1729,7 @@ function loadCSVFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
             console.timeEnd('Scale cached path to current screen');
 
             console.time('Create FourierInitials from cache');
-            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, segmentBoundaries, offsetX, offsetY, globalOffsetX, globalOffsetY, true);
+            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, segmentBoundaries, offsetX, offsetY, globalOffsetX, globalOffsetY, true, loopDelay);
 
             // Load and scale pre-computed epicycles
             if (axisMode === 'two' || axisMode === 'two_true') {
@@ -1674,11 +1769,11 @@ function loadCSVFile(filename, speed = 0.3, resolution = 1500, scale = 0.5, line
         }
 
         // No cache, compute normally
-        computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, cacheKey, offsetX, offsetY, globalOffsetX, globalOffsetY);
+        computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, cacheKey, offsetX, offsetY, globalOffsetX, globalOffsetY, loopDelay);
     });
 }
 
-function computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, cacheKey, offsetX, offsetY, globalOffsetX, globalOffsetY) {
+function computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, cacheKey, offsetX, offsetY, globalOffsetX, globalOffsetY, loopDelay) {
 
     fetch(`/assets/svg/${filename}`)
         .then(response => {
@@ -1823,7 +1918,7 @@ function computeAndCacheCSV(filename, speed, resolution, scale, linewidth, circl
             console.timeEnd('Scale to Fit');
 
             console.time('Create FourierInitials');
-            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, segmentBoundaries, offsetX, offsetY, globalOffsetX, globalOffsetY);
+            currentAnimation = new FourierInitials('sketchCanvas', 'svg', scaledPath, speed, linewidth, circles, maxFreq, maxCircleSize, axisMode, rotationMode, segmentBoundaries, offsetX, offsetY, globalOffsetX, globalOffsetY, false, loopDelay);
             console.timeEnd('Create FourierInitials');
             console.timeEnd('Total CSV Load Time');
 
